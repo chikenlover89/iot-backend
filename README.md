@@ -1,2 +1,2 @@
 ## About
-	Imperium IOT backend
+	IOT backend
