@@ -30,4 +30,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('accounts/{account}/members', [MembersController::class, 'index'])->name('accounts.members.view');
     Route::delete('accounts/{account}/members/{user}', [MembersController::class, 'destroy'])->name('accounts.members.destroy');
+    Route::post('accounts/{account}/members/invite', [MembersController::class, 'invite'])->name('accounts.members.invite');
 });
