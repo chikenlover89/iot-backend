@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Invitation;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,15 +29,33 @@ class AuthController extends Controller
         ]);
     }
 
-    public function register(Request $request)
+    public function register(Request $request, $token = null)
     {
         $validated = $request->validate([
             'name'     => 'required|max:255',
             'email'    => 'required|max:255|email|unique:users,email',
             'password' => 'required|confirmed|min:6'
         ]);
+
+        $invitation = null;
+        if(null !== $token) {
+            $invitation = Invitation::where('email', $validated['email'])
+                ->where('token', $token)
+                ->where('accepted', false)
+                ->first();
+            if (null === $invitation) {
+                return response()->json(['message' => 'Invalid invitation token.'], 404);
+            }
+        }
+
         $validated['password'] = Hash::make($validated['password']);
         $user                  = User::create($validated);
+
+        if(null !== $invitation) {
+            $invitation->accepted = true;
+            $invitation->account->members()->attach($user->id);
+            $invitation->save();
+        }
 
         return response()->json([
             'data'         => $user,

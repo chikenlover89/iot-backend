@@ -38,4 +38,12 @@ class AccountPolicy
     {
         return $user->id === $account->creator_id;
     }
+
+    public function viewInvitations(User $user, Account $account) {
+        return $account->members->contains($user->id);
+    }
+
+    public function sendInvitations(User $user, Account $account) {
+        return $user->id === $account->creator_id;
+    }
 }

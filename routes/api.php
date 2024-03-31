@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\MembersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,13 +23,16 @@ Route::middleware(['auth:sanctum', 'prevent.blocked'])->get('/user', function (R
 });
 
 Route::post('login', [AuthController::class, 'login']);
-Route::post('register', [AuthController::class, 'register']);
+Route::post('register/{token?}', [AuthController::class, 'register']);
 Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('accounts', AccountController::class);
 
     Route::get('accounts/{account}/members', [MembersController::class, 'index'])->name('accounts.members.view');
+    Route::post('accounts/{account}/members', [MembersController::class, 'store'])->name('accounts.members.store');
     Route::delete('accounts/{account}/members/{user}', [MembersController::class, 'destroy'])->name('accounts.members.destroy');
-    Route::post('accounts/{account}/members/invite', [MembersController::class, 'invite'])->name('accounts.members.invite');
+    
+    Route::get('invitations', [InvitationController::class, 'index'])->name('invitations.index');
+    Route::post('invitations/{account}', [InvitationController::class, 'store'])->name('invitations.store');
 });

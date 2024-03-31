@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -48,8 +49,24 @@ class User extends Authenticatable
         'password'          => 'hashed',
     ];
 
+    /**
+     * Get all of the accounts for the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function memberships(): BelongsToMany
     {
         return $this->belongsToMany(Account::class, Member::class);
+    }
+
+    /**
+     * Get all of the invitations for the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function invitations(): HasMany
+    {
+        return $this->hasMany(Invitation::class, 'email', 'email')
+            ->where('accepted', false);
     }
 }

@@ -8,6 +8,7 @@ use App\Mail\InvitationEmail;
 use App\Models\Account;
 use App\Models\User;
 use App\Models\Invitation;
+use Auth;
 use Illuminate\Http\Request;
 use Str;
 
@@ -30,45 +31,30 @@ class MembersController extends Controller
     }
 
     /**
-     * Invite a member to an account.
+     * Add authenticated user for the given account if invitation exists.
      *
      * @param Request $request
      * @param Account $account
      * @return \Illuminate\Http\JsonResponse
-     **/
-    public function invite(Request $request, Account $account)
+     */
+    public function store(Request $request, Account $account)
     {
-        $this->authorize('accessMembers', $account);
-    
-        $request->validate([
-            'email' => 'required|email|unique:invitations,email',
-        ]);
-    
-        $token = Str::random(60);
-    
-        $invitation = Invitation::create([
-            'email'      => $request->email,
-            'token'      => $token,
-            'accepted'   => false,
-            'account_id' => $account->id,
-        ]);
-    
-        try {
-            \Mail::to($request->email)->send(new InvitationEmail($token));
-        } catch (\Exception $e) {
-            $invitation->delete();
-            
-            \Log::error('Failed to send invitation email: ' . $e->getMessage());
-    
-            return response()->json(['message' => 'Failed to send the invitation.'], 500);
+        $invitation = Auth::user()->invitations()->where('account_id', $account->id)->first();
+
+        if (null === $invitation) {
+            return response()->json(['message' => 'Invitation not found.'], 404);
         }
-    
-        return response()->json(['message' => 'Invitation sent successfully.'], 201);
+
+        $account->members()->attach(Auth::user()->id);
+
+        $invitation->accepted = true;
+        $invitation->save();
+
+        return response()->json(['message' => 'Member added successfully.'], 201);
     }
-    
 
     /**
-     * Remove a member(user) from an account.
+     * Remove a member from an account.
      *
      * @param RemoveMemberRequest $request
      * @param Account $account
