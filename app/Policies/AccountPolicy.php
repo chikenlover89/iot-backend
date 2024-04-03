@@ -46,4 +46,12 @@ class AccountPolicy
     public function sendInvitations(User $user, Account $account) {
         return $user->id === $account->creator_id;
     }
+
+    public function viewDevices(User $user, Account $account) {
+        return $account->members->contains($user->id);
+    }
+
+    public function accessDevices(User $user, Account $account) {
+        return $user->id === $account->creator_id;
+    }
 }

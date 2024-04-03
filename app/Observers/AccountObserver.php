@@ -12,8 +12,10 @@ class AccountObserver
      */
     public function created(Account $account): void
     {
-        $account->members()->attach([Auth::id()]);
-        // TODO add admin rights
+        $auth_id = Auth::id();
+        if (null !== $auth_id && $account->creator_id === $auth_id) {
+            $account->members()->attach($auth_id);
+        }
     }
 
     /**
