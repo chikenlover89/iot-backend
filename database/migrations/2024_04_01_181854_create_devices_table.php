@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('type', 30);
             $table->unsignedSmallInteger('signal')->nullable();
             $table->timestamp('last_activity')->nullable();
-            $table->foreignId('account_id')->constrained()->index();
+            $table->foreignId('account_id')->constrained();
             $table->foreignId('location_id')->default(0);
             $table->string('handler_key', 64)->unique()->index();
             $table->softDeletes();

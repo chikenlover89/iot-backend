@@ -25,11 +25,11 @@ class StoreAccountRequest extends FormRequest
      *
      * @return array
      */
-    public function messages()
+    public function messages(): array
     {
         return [
             'name.required' => 'The account name is required.',
-            'name.unique' => 'An account with the same name already exists.',
+            'name.unique'   => 'An account with the same name already exists.',
         ];
     }
 

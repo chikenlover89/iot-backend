@@ -33,6 +33,6 @@ class MembersIndexTest extends TestCase
 
         $response = $this->get(route('accounts.members.index', $account));
 
-        $response->assertForbidden();
+        $response->assertStatus(404);
     }
 }

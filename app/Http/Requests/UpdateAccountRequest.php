@@ -23,7 +23,7 @@ class UpdateAccountRequest extends FormRequest
      *
      * @return array
      */
-    public function messages()
+    public function messages(): array
     {
         return [
             'name.unique' => 'An account with the same name already exists.',

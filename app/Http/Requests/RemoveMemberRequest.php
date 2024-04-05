@@ -30,7 +30,7 @@ class RemoveMemberRequest extends FormRequest
     protected function userNotInAccount(): bool
     {
         $accountId = $this->route('account')->id;
-        $userId = $this->route('user')->id;
+        $userId    = $this->route('user')->id;
 
         return !\App\Models\Account::find($accountId)->members()->where('users.id', $userId)->exists();
     }
