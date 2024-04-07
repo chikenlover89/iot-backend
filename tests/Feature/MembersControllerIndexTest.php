@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class MembersIndexTest extends TestCase
+class MembersControllerIndexTest extends TestCase
 {
     use RefreshDatabase;
 

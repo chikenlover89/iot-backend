@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class MembersDestroyTest extends TestCase
+class MembersControllerDestroyTest extends TestCase
 {
     use RefreshDatabase;
 

@@ -27,7 +27,7 @@ class RouteServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Route::bind('account', function ($value, $route) {
-            if('accounts.members.store' === $route->getName()){
+            if ('accounts.members.store' === $route->getName()) {
                 return Account::where('id', $value)->firstOrFail();
             }
             $memberships = Auth::user()->memberships->pluck('id');
