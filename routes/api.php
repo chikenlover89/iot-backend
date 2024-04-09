@@ -5,6 +5,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\MembersController;
+use App\Http\Controllers\PeripheralController;
+use App\Http\Controllers\PeripheralDataController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +32,8 @@ Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanct
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('accounts', AccountController::class);
     Route::apiResource('accounts.devices', DeviceController::class);
+    Route::apiResource('accounts.devices.peripherals', PeripheralController::class)->only(['index', 'destroy']);
+    Route::apiResource('accounts.devices.peripherals.data', PeripheralDataController::class)->only(['index', 'destroy']);
 
     Route::get('accounts/{account}/members', [MembersController::class, 'index'])->name('accounts.members.index');
     Route::post('accounts/{account}/members', [MembersController::class, 'store'])->name('accounts.members.store');

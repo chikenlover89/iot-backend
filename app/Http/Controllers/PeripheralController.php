@@ -17,16 +17,18 @@ class PeripheralController extends Controller
     {
         $this->authorize('viewDevices', $account);
 
-        return new PeripheralCollection($account->devices);
+        return new PeripheralCollection($device->peripherals);
     }
 
      /**
      * Destroy peripheral.
      */
-    public function destroy(Account $account, Device $device, Peripheral $peripheral)
+    public function destroy(Account $account, Peripheral $peripheral)
     {
         $this->authorize('accessDevices', $account);
 
-        return new PeripheralCollection($account->devices);
+        $peripheral->delete();
+
+        return response()->json(['message' => 'Peripheral deleted successfully.']);
     }
 }

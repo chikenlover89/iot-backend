@@ -26,7 +26,7 @@ class AccountController extends Controller
 
     public function store(StoreAccountRequest $request)
     {
-        $account = Account::create($request->validated());
+        $account = new Account($request->validated());
 
         $account->creator_id = Auth::id();
         $account->save();
