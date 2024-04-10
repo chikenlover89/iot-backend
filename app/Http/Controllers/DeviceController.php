@@ -8,6 +8,7 @@ use App\Http\Resources\DeviceCollection;
 use App\Http\Resources\DeviceResource;
 use App\Models\Account;
 use App\Models\Device;
+use Auth;
 use Str;
 
 class DeviceController extends Controller
@@ -17,7 +18,8 @@ class DeviceController extends Controller
      */
     public function index(Account $account)
     {
-        $this->authorize('viewDevices', $account);
+        $account = Auth::user()->account;
+        $this->authorize('accessDevices', $account);
 
         return new DeviceCollection($account->devices);
     }
@@ -25,12 +27,9 @@ class DeviceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Account $account, Device $device)
+    public function show(Device $device)
     {
-        $this->authorize('viewDevices', $account);
-        if ($device->account_id !== $account->id) {
-            return response()->json(['message' => 'Device not found'], 404);
-        }
+        $this->authorize('accessDevices', Auth::user()->account);
 
         return new DeviceResource($device);
     }
@@ -38,8 +37,9 @@ class DeviceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreDeviceRequest $request, Account $account)
+    public function store(StoreDeviceRequest $request)
     {
+        $account = Auth::user()->account;
         $this->authorize('accessDevices', $account);
         $validated = $request->validated();
 
@@ -54,12 +54,9 @@ class DeviceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateDeviceRequest $request, Account $account, Device $device)
+    public function update(UpdateDeviceRequest $request, Device $device)
     {
-        $this->authorize('accessDevices', $account);
-        if ($device->account_id !== $account->id) {
-            return response()->json(['message' => 'Device not found'], 404);
-        }
+        $this->authorize('accessDevices', Auth::user()->account);
 
         $device->update($request->validated());
 
@@ -71,7 +68,7 @@ class DeviceController extends Controller
      */
     public function destroy(Account $account, Device $device)
     {
-        $this->authorize('accessDevices', $account);
+        $this->authorize('accessDevices', Auth::user()->account);
 
         $device->delete();
 

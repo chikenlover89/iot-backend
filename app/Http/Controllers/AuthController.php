@@ -55,6 +55,8 @@ class AuthController extends Controller
             $invitation->accepted = true;
             $invitation->account->members()->attach($user->id);
             $invitation->save();
+
+            $user->setAccount($invitation->account);
         }
 
         return response()->json([

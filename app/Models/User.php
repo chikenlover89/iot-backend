@@ -69,4 +69,24 @@ class User extends Authenticatable
         return $this->hasMany(Invitation::class, 'email', 'email')
             ->where('accepted', false);
     }
+
+    /**
+     * Get user active account
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|null
+     */
+    public function account()
+    {
+        return $this->belongsTo(Account::class, 'active_account');
+    }
+
+    /**
+     * Set user active account
+     *
+     * @param Account $account
+     */
+    public function setAccount(Account $account) {
+        $this->active_account = $account->id;
+        $this->save();
+    }
 }

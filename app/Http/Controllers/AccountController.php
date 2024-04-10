@@ -7,7 +7,6 @@ use App\Http\Requests\UpdateAccountRequest;
 use App\Http\Resources\AccountCollection;
 use App\Http\Resources\AccountResource;
 use App\Models\Account;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AccountController extends Controller
@@ -31,6 +30,8 @@ class AccountController extends Controller
         $account->creator_id = Auth::id();
         $account->save();
 
+        Auth::user()->setAccount($account);
+
         return new AccountResource($account);
     }
 
@@ -50,5 +51,12 @@ class AccountController extends Controller
         $account->delete();
 
         return response()->json(['message' => 'Account deleted successfully.']);
+    }
+
+    public function activate(Account $account)
+    {
+        Auth::user()->setAccount($account);
+
+        return response()->json(['message' => 'Active account set.']);
     }
 }

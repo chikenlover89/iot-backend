@@ -6,6 +6,7 @@ use App\Http\Resources\PeripheralCollection;
 use App\Models\Account;
 use App\Models\Device;
 use App\Models\Peripheral;
+use Auth;
 use Illuminate\Http\Request;
 
 class PeripheralController extends Controller
@@ -13,9 +14,9 @@ class PeripheralController extends Controller
     /**
      * Display all peripherals.
      */
-    public function index(Account $account, Device $device)
+    public function index(Device $device)
     {
-        $this->authorize('viewDevices', $account);
+        $this->authorize('viewDevices', Auth::user()->account);
 
         return new PeripheralCollection($device->peripherals);
     }
@@ -23,9 +24,9 @@ class PeripheralController extends Controller
      /**
      * Destroy peripheral.
      */
-    public function destroy(Account $account, Peripheral $peripheral)
+    public function destroy(Peripheral $peripheral)
     {
-        $this->authorize('accessDevices', $account);
+        $this->authorize('accessDevices', Auth::user()->account);
 
         $peripheral->delete();
 

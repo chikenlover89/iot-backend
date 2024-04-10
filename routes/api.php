@@ -31,14 +31,15 @@ Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanct
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('accounts', AccountController::class);
-    Route::apiResource('accounts.devices', DeviceController::class);
-    Route::apiResource('accounts.devices.peripherals', PeripheralController::class)->only(['index', 'destroy']);
-    Route::apiResource('accounts.devices.peripherals.data', PeripheralDataController::class)->only(['index', 'destroy']);
+    Route::put('accounts/{account}/activate', [AccountController::class, 'activate'])->name('accounts.activate');
 
-    Route::get('accounts/{account}/members', [MembersController::class, 'index'])->name('accounts.members.index');
-    Route::post('accounts/{account}/members', [MembersController::class, 'store'])->name('accounts.members.store');
+    Route::apiResource('accounts.members', MembersController::class)->only(['index', 'store']);
     Route::delete('accounts/{account}/members/{user}', [MembersController::class, 'destroy'])->name('accounts.members.destroy');
-    
+
     Route::get('invitations', [InvitationController::class, 'index']);
     Route::post('invitations/{account}', [InvitationController::class, 'store']);
+
+    Route::apiResource('devices', DeviceController::class);
+    Route::apiResource('devices.peripherals', PeripheralController::class)->only(['index', 'destroy']);
+    Route::apiResource('devices.peripherals.data', PeripheralDataController::class)->only(['index']);
 });

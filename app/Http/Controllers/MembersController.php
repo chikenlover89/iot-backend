@@ -39,11 +39,7 @@ class MembersController extends Controller
      */
     public function store(Request $request, Account $account)
     {
-        $invitation = Auth::user()->invitations()->where('account_id', $account->id)->first();
-
-        if (null === $invitation) {
-            return response()->json(['message' => 'Invitation not found.'], 404);
-        }
+        $invitation = Auth::user()->invitations()->where('account_id', $account->id)->firstOrFail();
 
         $account->members()->attach(Auth::user()->id);
 

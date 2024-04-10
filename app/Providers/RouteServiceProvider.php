@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Account;
+use App\Models\Peripheral;
 use Auth;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -35,16 +36,14 @@ class RouteServiceProvider extends ServiceProvider
             return Account::where('id', $value)->whereIn('id', $memberships)->firstOrFail();
         });
 
-        Route::bind('device', function ($deviceId, $route) {
-            $account = $route->parameter('account');
-
-            return $account->devices()->where('id', $deviceId)->firstOrFail();
+        Route::bind('device', function ($deviceId) {
+            return Auth::user()->account->devices()->where('id', $deviceId)->firstOrFail();
         });
 
-        Route::bind('peripheral', function ($peripheralId, $route) {
-            $device  = $route->parameter('device');
-
-            return $device->peripherals()->where('id', $peripheralId)->firstOrFail();
+        Route::bind('peripheral', function ($peripheralId) {
+            return Peripheral::whereHas('device', function ($query) {
+                $query->where('account_id', Auth::user()->account->id);
+            })->where('id', $peripheralId)->firstOrFail();
         });
 
         RateLimiter::for('api', function (Request $request) {
