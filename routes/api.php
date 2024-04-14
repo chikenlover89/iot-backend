@@ -7,6 +7,7 @@ use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\MembersController;
 use App\Http\Controllers\PeripheralController;
 use App\Http\Controllers\PeripheralDataController;
+use App\Http\Handlers\DeviceDataHandler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,7 +30,7 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('register/{token?}', [AuthController::class, 'register']);
 Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
-Route::middleware(['auth:sanctum'])->group(function () {
+Route::middleware(['auth:sanctum', 'prevent.blocked'])->group(function () {
     Route::apiResource('accounts', AccountController::class);
     Route::put('accounts/{account}/activate', [AccountController::class, 'activate'])->name('accounts.activate');
 
@@ -42,4 +43,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('devices', DeviceController::class);
     Route::apiResource('devices.peripherals', PeripheralController::class)->only(['index', 'destroy']);
     Route::apiResource('devices.peripherals.data', PeripheralDataController::class)->only(['index']);
+});
+
+Route::middleware(['auth.device'])->group(function () {
+    Route::post('/devicehandler', [DeviceDataHandler::class, 'store']);
 });

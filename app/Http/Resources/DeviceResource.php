@@ -27,7 +27,7 @@ class DeviceResource extends JsonResource
         ];
 
         if($this->account->creator_id === Auth::id()) {
-            $data['handler_key'] = $this->handler_key;
+            $data['token']       = $this->token;
             $data['location_id'] = $this->location_id;
         }
 

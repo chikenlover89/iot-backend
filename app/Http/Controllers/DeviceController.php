@@ -45,7 +45,7 @@ class DeviceController extends Controller
 
         $device = new Device($validated);
         $device->account_id  = $account->id;
-        $device->handler_key = Str::random(60);
+        $device->token = Str::random(60);
         $device->save();
 
         return new DeviceResource($device);

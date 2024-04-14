@@ -23,7 +23,7 @@ class DeviceFactory extends Factory
             'description' => $this->faker->address,
             'network'     => Device::NETWORK_WIFI,
             'type'        => Device::MULTI_PURPOSE_DEVICE,
-            'handler_key' => Str::random(60),
+            'token'       => Str::random(60),
         ];
     }
 }
