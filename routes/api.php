@@ -3,11 +3,11 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DeviceController;
+use App\Http\Controllers\Entry\DeviceDataEntry;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\MembersController;
 use App\Http\Controllers\PeripheralController;
 use App\Http\Controllers\PeripheralDataController;
-use App\Http\Handlers\DeviceDataHandler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,8 +26,8 @@ Route::middleware(['auth:sanctum', 'prevent.blocked'])->get('/user', function (R
     return $request->user();
 });
 
-Route::post('login', [AuthController::class, 'login']);
-Route::post('register/{token?}', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login'])->middleware('throttle:3,1');
+Route::post('register/{token?}', [AuthController::class, 'register'])->middleware('throttle:10,1');
 Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 Route::middleware(['auth:sanctum', 'prevent.blocked'])->group(function () {
@@ -45,6 +45,6 @@ Route::middleware(['auth:sanctum', 'prevent.blocked'])->group(function () {
     Route::apiResource('devices.peripherals.data', PeripheralDataController::class)->only(['index']);
 });
 
-Route::middleware(['auth.device'])->group(function () {
-    Route::post('/devicehandler', [DeviceDataHandler::class, 'store']);
+Route::middleware(['auth.device', 'throttle:10,1'])->group(function () {
+    Route::post('/entry', [DeviceDataEntry::class, 'store']);
 });

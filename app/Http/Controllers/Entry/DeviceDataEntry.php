@@ -1,20 +1,25 @@
 <?php
 
-namespace App\Http\Handlers;
+namespace App\Http\Controllers\Entry;
 
 use App\Models\RawDeviceData;
 use Illuminate\Http\Request;
 
-class DeviceDataHandler extends \App\Http\Controllers\Controller
+class DeviceDataEntry extends \App\Http\Controllers\Controller
 {
     /**
      * Store data from device.
      */
     public function store(Request $request)
     {
+        $data = json_encode($request->all());
+        if(strlen($data) > 256) {
+            return response()->json(['message' => 'Too much data'], 400);
+        }
+
         RawDeviceData::create([
             'device_id'  => $request->attributes->get('device_id'),
-            'data'       => json_encode($request->all()),
+            'data'       => $data,
             'ip_address' => $request->ip(),
         ]);
 
