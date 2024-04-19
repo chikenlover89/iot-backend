@@ -20,7 +20,7 @@ class PeripheralFactory extends Factory
         return [
             "function"     => Peripheral::FUNCTION_INPUT,
             "type"         => Peripheral::TYPE_TEMPERATURE,
-            "parameter_id" => Peripheral::PREFIX_TEMPERATURE . $this->faker->numberBetween(1, 100),
+            "parameter_id" => Peripheral::PREFIX_TEMPERATURE . '_' . $this->faker->numberBetween(1, 100),
             'hidden'       => false,
         ];
     }

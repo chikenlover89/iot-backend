@@ -2,8 +2,13 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Peripheral;
+use App\Models\PeripheralData;
 use App\Models\RawDeviceData;
+use Exception;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Model;
+use Log;
 
 class ProcessDeviceData extends Command
 {
@@ -26,17 +31,39 @@ class ProcessDeviceData extends Command
      */
     public function handle()
     {
-        $rawData = RawDeviceData::where('is_processed', false)->get();
+        $entries   = RawDeviceData::where('is_processed', false)->get();
+        $processed = 0;
 
-        foreach ($rawData as $data) {
-            $json = json_decode($data->data, true);
-            
-            // ...
+        foreach ($entries as $entry) {
+            try {
+                $json = json_decode($entry->data, true);
 
-            $data->is_processed = true;
-            $data->save();
+                foreach ($json as $key => $value) {
+                    if (!Peripheral::isValidParameterId($key)) {
+                        Log::error('Failed to process RawDeviceData: ' . $entry->id . ', key:' . $key);
 
-            $this->info('Processed data for device: ' . $data->device_id);
+                        continue;
+                    }
+
+                    $peripheral = Peripheral::findOrCreate($entry->device_id, $key);
+
+                    Model::unguard();
+                    PeripheralData::create([
+                        'peripheral_id' => $peripheral->id,
+                        'value'         => $value,
+                    ]);
+                    Model::reguard();
+                }
+
+                $entry->is_processed = true;
+                $entry->save();
+
+                $processed++;
+            } catch (Exception $e) {
+                Log::error('Failed to process RawDeviceData: ' . $entry->id . " --- " . (string)$e);
+            }
         }
+
+        Log::info('Processed RawDeviceData ' . $processed . '/' . count($entries));
     }
 }

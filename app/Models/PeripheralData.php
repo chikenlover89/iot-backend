@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class PeripheralData extends Model
 {
     use HasFactory;
+
+    public $timestamps = false;
+
+    public $casts = [
+        'value' => 'float'
+    ];
 }
