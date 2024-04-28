@@ -19,12 +19,14 @@ class Peripheral extends Model
     public const TYPE_HUMIDITY    = 'humidity';
     public const TYPE_CO2         = 'co2';
     public const TYPE_RELAY       = 'relay';
+    public const TYPE_SWITCH      = 'switch';
     public const TYPE_UNKNOWN     = 'unknown';
 
     public const PREFIX_TEMPERATURE = 't';
     public const PREFIX_HUMIDITY    = 'h';
     public const PREFIX_CO2         = 'co2';
     public const PREFIX_RELAY       = 'r';
+    public const PREFIX_SWITCH      = 'sw';
 
     public const OUTPUT_PERIPHERALS = [
         self::PREFIX_RELAY => self::TYPE_RELAY,
@@ -34,6 +36,7 @@ class Peripheral extends Model
         self::PREFIX_TEMPERATURE => self::TYPE_TEMPERATURE,
         self::PREFIX_HUMIDITY    => self::TYPE_HUMIDITY,
         self::PREFIX_CO2         => self::TYPE_CO2,
+        self::PREFIX_SWITCH      => self::TYPE_SWITCH,
     ];
 
     /**
