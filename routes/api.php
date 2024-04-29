@@ -8,6 +8,7 @@ use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\MembersController;
 use App\Http\Controllers\PeripheralController;
 use App\Http\Controllers\PeripheralDataController;
+use App\Http\Controllers\UserConfigController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -43,6 +44,8 @@ Route::middleware(['auth:sanctum', 'prevent.blocked'])->group(function () {
     Route::apiResource('devices', DeviceController::class);
     Route::apiResource('devices.peripherals', PeripheralController::class)->only(['index', 'destroy']);
     Route::apiResource('devices.peripherals.data', PeripheralDataController::class)->only(['index']);
+
+    Route::apiResource('user/config', UserConfigController::class)->only(['index', 'store']);
 });
 
 Route::middleware(['auth.device', 'throttle:10,1'])->group(function () {

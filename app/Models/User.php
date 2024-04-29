@@ -81,6 +81,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Get user config entries.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function config(): HasMany
+    {
+        return $this->hasMany(UserConfig::class)->where('account_id', $this->active_account);
+    }
+
+    /**
      * Set user active account
      *
      * @param Account $account
