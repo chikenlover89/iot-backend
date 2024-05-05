@@ -46,6 +46,10 @@ class RouteServiceProvider extends ServiceProvider
             })->where('id', $peripheralId)->firstOrFail();
         });
 
+        Route::bind('alert', function ($alertId) {
+            return Auth::user()->account->alerts()->where('id', $alertId)->firstOrFail();
+        });
+
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });

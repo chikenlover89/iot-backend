@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AlertController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\Entry\DeviceDataEntry;
@@ -46,6 +47,8 @@ Route::middleware(['auth:sanctum', 'prevent.blocked'])->group(function () {
     Route::apiResource('devices.peripherals.data', PeripheralDataController::class)->only(['index']);
 
     Route::apiResource('user/config', UserConfigController::class)->only(['index', 'store']);
+
+    Route::apiResource('alerts', AlertController::class)->only(['index', 'update']);
 });
 
 Route::middleware(['auth.device', 'throttle:10,1'])->group(function () {
