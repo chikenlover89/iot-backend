@@ -20,6 +20,7 @@ class AccountFactory extends Factory
     {
         return [
             'name' => $this->faker->company,
+            'utc_offset' => '+00:00',
             'creator_id' => null,
         ];
     }

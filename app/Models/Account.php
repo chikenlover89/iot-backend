@@ -17,6 +17,7 @@ class Account extends Model
 
     protected $fillable = [
         'name',
+        'utc_offset'
     ];
 
     public function creator(): HasOne

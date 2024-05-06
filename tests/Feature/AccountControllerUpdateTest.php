@@ -16,7 +16,8 @@ class AccountControllerUpdateTest extends TestCase
     {
         $account = Account::factory()->create();
         $accountPostRequest = [
-            'name' => Faker::create()->company,
+            'name'       => Faker::create()->company,
+            'utc_offset' => '+00:00',
         ];
 
         /** @disregard P1006*/
@@ -31,7 +32,8 @@ class AccountControllerUpdateTest extends TestCase
         $account1 = Account::factory()->create();
         $account2 = Account::factory()->create();
         $accountPostRequest = [
-            'name' => Faker::create()->company,
+            'name'       => Faker::create()->company,
+            'utc_offset' => '+00:00',
         ];
 
         /** @disregard P1006*/

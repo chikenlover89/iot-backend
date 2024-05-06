@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->foreignId('creator_id')->nullable()->constrained('users');
+            $table->string('utc_offset')->default('+02:00');
             $table->timestamps();
             $table->softDeletes();
         });

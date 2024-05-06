@@ -16,7 +16,8 @@ class AccountControllerStoreTest extends TestCase
     {
         $user = User::factory()->create();
         $accountPostRequest = [
-            'name' => Faker::create()->company,
+            'name'       => Faker::create()->company,
+            'utc_offset' => '+00:00',
         ];
 
         /** @disregard P1006*/

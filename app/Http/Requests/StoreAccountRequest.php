@@ -16,7 +16,8 @@ class StoreAccountRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255|unique:accounts,name',
+            'name'       => 'required|string|max:255|unique:accounts,name',
+            'utc_offset' => ['required', 'regex:/^(\+|\-)(0[0-9]|1[0-4]):[0-5][0-9]$/'],
         ];
     }
 

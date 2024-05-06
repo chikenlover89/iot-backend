@@ -14,7 +14,8 @@ class UpdateAccountRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'sometimes|string|max:255|unique:accounts,name',
+            'name'       => 'sometimes|string|max:255|unique:accounts,name',
+            'utc_offset' => ['required', 'regex:/^(\+|\-)(0[0-9]|1[0-4]):[0-5][0-9]$/'],
         ];
     }
 

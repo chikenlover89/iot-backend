@@ -17,6 +17,7 @@ class AccountResource extends JsonResource
         return [
             'id'         => $this->id,
             'name'       => $this->name,
+            'utc_offset' => $this->utc_offset,
             'created_at' => $this->created_at,
         ];
     }

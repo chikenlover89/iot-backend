@@ -16,7 +16,7 @@ class AccountControllerDestroyTest extends TestCase
         $account = Account::factory()->create();
         /** @disregard P1006*/
         $this->actingAs($account->creator)
-             ->putJson(route('accounts.update', ['account' => $account->id]))
+             ->deleteJson(route('accounts.destroy', ['account' => $account->id]))
              ->AssertOk();
     }
 
