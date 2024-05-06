@@ -19,7 +19,7 @@ class AccountFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->company,
+            'name'       => $this->faker->company,
             'utc_offset' => '+00:00',
             'creator_id' => null,
         ];

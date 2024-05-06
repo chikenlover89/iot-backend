@@ -10,8 +10,8 @@ class Alert extends Model
 {
     use HasFactory, SoftDeletes;
 
-    public const ALERT_TYPE_SCHEDULED       = 'scheduled';
-    public const ALERT_TYPE_SENSOR_VALUE    = 'sensor_value';
+    public const ALERT_TYPE_SCHEDULED    = 'scheduled';
+    public const ALERT_TYPE_SENSOR_VALUE = 'sensor_value';
 
     protected $fillable = [
         'resolved',
