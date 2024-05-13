@@ -39,4 +39,9 @@ class Account extends Model
     {
         return $this->hasMany(Alert::class);
     }
+
+    public function peripheral_alerts(): HasMany
+    {
+        return $this->hasMany(PeripheralAlert::class);
+    }
 }
