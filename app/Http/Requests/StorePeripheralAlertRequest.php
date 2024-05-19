@@ -46,6 +46,9 @@ class StorePeripheralAlertRequest extends FormRequest
             if (!$this->isUserAccountDevicePeripheral()) {
                 abort_if(!$this->isUserAccountDevicePeripheral(), 404, 'Peripheral not found.');
             }
+            if($this->peripheralHasAlert()) {
+                abort_if($this->peripheralHasAlert(), 422, 'Peripheral alert already exists.');
+            }
         });
     }
 
@@ -61,5 +64,16 @@ class StorePeripheralAlertRequest extends FormRequest
         return Peripheral::whereHas('device', function ($query) {
             $query->where('account_id', Auth::user()->account->id);
         })->where('id', $peripheralId)->exists();
+    }
+
+
+    /**
+     * Determine if peripheral alert exists.
+     *
+     * @return bool
+     */
+    protected function peripheralHasAlert(): bool
+    {
+        return PeripheralAlert::where('peripheral_id', $this->input('peripheral_id'))->exists();
     }
 }

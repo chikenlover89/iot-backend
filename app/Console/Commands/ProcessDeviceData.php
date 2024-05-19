@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Alert;
 use App\Models\Peripheral;
 use App\Models\PeripheralData;
 use App\Models\RawDeviceData;
@@ -53,6 +54,11 @@ class ProcessDeviceData extends Command
                         'value'         => $value,
                     ]);
                     Model::reguard();
+
+                    $alertConfig = $peripheral->alert_config;
+                    if ($alertConfig !== null) {
+                        Alert::processPeripheralAlert($value, $alertConfig);
+                    }
                 }
 
                 $entry->is_processed = true;

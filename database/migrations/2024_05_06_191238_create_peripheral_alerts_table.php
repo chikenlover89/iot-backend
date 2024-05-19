@@ -22,6 +22,9 @@ return new class extends Migration
             $table->float('resolve_value');
             $table->string('direction');
             $table->timestamps();
+
+            $table->unique('peripheral_id');
+            $table->unique(['device_id', 'name']);
         });
     }
 

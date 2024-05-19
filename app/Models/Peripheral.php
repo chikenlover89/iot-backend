@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Peripheral extends Model
 {
@@ -56,6 +57,11 @@ class Peripheral extends Model
     public function data(): HasMany
     {
         return $this->hasMany(PeripheralData::class);
+    }
+
+    public function alert_config(): HasOne
+    {
+        return $this->hasOne(PeripheralAlert::class);
     }
 
     public static function findOrCreate(int $deviceId, string $parameter_id): self
